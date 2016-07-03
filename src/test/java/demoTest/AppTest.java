@@ -1,6 +1,9 @@
 package demoTest;
 
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.sql.*;
 
@@ -23,9 +26,20 @@ public class AppTest {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             statement = conn.createStatement();
-        }catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterClass
+    public static void end() {
+        try {
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -39,6 +53,7 @@ public class AppTest {
             System.out.println("QTY = " + qty);
         }
     }
+
     @Test
     public void testOne() throws SQLException {
         resultSet = statement.executeQuery("SELECT * FROM orders;");
@@ -46,16 +61,5 @@ public class AppTest {
         int expected = 7;
         int actual = resultSet.getInt("QTY");
         Assert.assertEquals("ะะต 7", expected, actual);
-    }
-
-    @AfterClass
-    public static void end() {
-        try {
-            resultSet.close();
-            statement.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

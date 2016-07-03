@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="demo.models.Office" table="OFFICES">
+        <id name="id" type="int" column="OFFICE">
+            <generator class="native"/>
+        </id>
+        <property name="city" column="CITY" type="string"/>
+        <property name="region" column="REGION" type="string"/>
+    </class>
+</hibernate-mapping>
