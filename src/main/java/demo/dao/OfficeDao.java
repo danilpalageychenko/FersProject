@@ -2,7 +2,6 @@ package demo.dao;
 
 import demo.models.Office;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,11 +13,11 @@ public class OfficeDao {
     private static final String DB_URL = "jdbc:mysql://localhost/new_db";
     private static final String USER = "root";
     private static final String PASS = "toor";
-    private static Connection conn = null;
+    private static SessionHolder sessionHolder = null;
     private static Statement statement = null;
 
-    public OfficeDao(Connection conn) {
-        this.conn = conn;
+    public OfficeDao(SessionHolder sessionHolder) {
+        this.sessionHolder = sessionHolder;
     }
 
     public boolean save(Office office) throws SQLException {
@@ -43,7 +42,7 @@ public class OfficeDao {
         String sql = String.format("select OFFICE,CITY,REGION from OFFICES where OFFICE=%d",
                 id);
         try {
-            statement = conn.createStatement();
+            statement = sessionHolder.obtainConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             Office office = null;
             if (resultSet.next()) {
@@ -72,7 +71,7 @@ public class OfficeDao {
         String sql = "select OFFICE,CITY,REGION from OFFICES";
         List<Office> offices = new ArrayList<Office>();
         try {
-            statement = conn.createStatement();
+            statement = sessionHolder.obtainConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 Office office = new Office();
@@ -99,7 +98,7 @@ public class OfficeDao {
     private boolean executeSql(String sql) throws SQLException {
         int count = 0;
         try {
-            statement = conn.createStatement();
+            statement = sessionHolder.obtainConnection().createStatement();
             count = statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();

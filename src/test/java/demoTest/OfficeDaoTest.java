@@ -1,6 +1,7 @@
 package demoTest;
 
 import demo.dao.OfficeDao;
+import demo.dao.SessionHolder;
 import demo.models.Office;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class OfficeDaoTest {
         }
         Assert.assertNotNull(conn);
 
-        OfficeDao officeDao = new OfficeDao(conn);
+        OfficeDao officeDao = new OfficeDao(new SessionHolder());
         List<Office> all = officeDao.getAll();
         Assert.assertTrue(all.size() > 0);
         for (int i = 0; i < all.size(); i++) {
